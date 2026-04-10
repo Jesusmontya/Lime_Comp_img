@@ -8,11 +8,11 @@ import os
 # Inicializamos FastAPI con nombre profesional
 app = FastAPI(title="LessImage API - Dev Group Studio")
 
-# Configuramos CORS (Crucial para que tu Frontend pueda hablar con el Backend)
+# Configuramos CORS (Corregido para producción)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción pon aquí la URL de tu página
-    allow_credentials=True,
+    allow_origins=["*"],  # Permite conexiones de tu dominio
+    allow_credentials=False, # ¡AQUÍ ESTABA EL ERROR! Debe ser False si usas "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -21,7 +21,6 @@ app.add_middleware(
 @app.get("/")
 async def read_index():
     # Esta ruta le dice a FastAPI: "Si alguien entra a la raíz, dales el index.html"
-    # El if os.path.exists ayuda a que no se caiga el servidor si olvidas subir el HTML
     if os.path.exists('index.html'):
         return FileResponse('index.html')
     return {"mensaje": "El servidor de Dev Group Studio está activo, pero falta el archivo index.html"}
@@ -30,7 +29,6 @@ async def read_index():
 @app.post("/api/compress")
 async def compress_image(
     file: UploadFile = File(...),
-    # Aquí podríamos recibir el % de compresión que elija el usuario, por ahora lo fijamos en 60
     quality: int = 60
 ):
     # 1. Validación de seguridad básica
@@ -42,22 +40,21 @@ async def compress_image(
         image_data = await file.read()
         img = Image.open(io.BytesIO(image_data))
 
-        # Opcional: Convertir imágenes RGBA (con transparencia como los PNG) a RGB
-        # porque los formatos más ligeros como JPEG no soportan transparencia
-        if img.mode in ("RGBA", "P"):
-            img = img.convert("RGB")
+        # 3. Mantenemos la transparencia (RGBA). 
+        # Convertimos solo si es una paleta rara para evitar errores, pero respetando el canal Alpha.
+        if img.mode not in ("RGB", "RGBA"):
+            img = img.convert("RGBA")
 
-        # 3. Preparamos un buffer de memoria para guardar el resultado optimizado
+        # 4. Preparamos un buffer de memoria para guardar el resultado optimizado
         output_buffer = io.BytesIO()
 
-        # 4. Magia de optimización: 
-        # Convertimos a WebP, que es el mejor formato para reducir peso manteniendo calidad
+        # 5. Magia de optimización: Convertimos a WebP
         img.save(output_buffer, format="WEBP", optimize=True, quality=quality)
         
         # Regresamos el "cursor" del buffer al inicio para poder leerlo y enviarlo
         output_buffer.seek(0)
 
-        # 5. Enviamos la imagen procesada de vuelta al usuario para que se descargue
+        # 6. Enviamos la imagen procesada de vuelta al usuario para que se descargue
         return StreamingResponse(
             output_buffer, 
             media_type="image/webp",
