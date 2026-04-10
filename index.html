@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LessImage | Dev Group Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glow-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .bg-blob {
+            position: absolute;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.35;
+            border-radius: 50%;
+        }
+
+        .ad-slot {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .ad-slot::before {
+            content: "ADVERTISEMENT";
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: monospace;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Personalización del input range invisible para el slider */
+        input[type=range]::-webkit-slider-thumb {
+            pointer-events: all;
+            width: 40px;
+            height: 40px;
+            -webkit-appearance: none;
+            @apply cursor-ew-resize;
+        }
+    </style>
+</head>
+<body class="bg-[#050505] text-gray-200 min-h-screen flex items-center justify-center p-6 relative z-0 overflow-x-hidden font-sans antialiased">
+
+    <div class="bg-blob bg-indigo-600 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
+    <div class="bg-blob bg-purple-600 w-[400px] h-[400px] bottom-[-50px] right-[-50px]"></div>
+
+    <div class="max-w-6xl w-full flex flex-col gap-6">
+
+        <div class="ad-slot glass rounded-2xl w-full h-[100px] md:h-[120px]">
+            <span class="text-gray-500 font-medium text-sm">Espacio para Google AdSense</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="flex flex-col gap-6 md:col-span-1">
+                
+                <div class="glass rounded-3xl p-8 flex flex-col justify-between glow-hover shadow-lg flex-grow relative overflow-hidden">
+                    
+                    <div id="limes-speech" class="absolute top-5 right-5 bg-indigo-600 text-white text-xs font-medium px-3 py-1.5 rounded-full rounded-bl-none shadow-lg animate-fade-in transition-colors duration-500 z-10" style="animation-delay: 0.5s;">
+                        ¡Yo me encargo! 🤖
+                    </div>
+
+                    <div>
+                        <div class="w-24 h-24 mb-6 relative animate-float">
+                            <svg id="limes-svg" viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_15px_rgba(99,102,241,0.6)] transition-all duration-500">
+                                <defs>
+                                    <linearGradient id="robotBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="visorDark" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#000000;stop-opacity:0.95" />
+                                        <stop offset="100%" style="stop-color:#1e293b;stop-opacity:0.95" />
+                                    </linearGradient>
+                                </defs>
+                                
+                                <path d="M 25 30 L 12 20 M 75 30 L 88 20" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="12" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                <circle cx="88" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+
+                                <path d="M50 15 L80 35 L80 65 L50 85 L20 65 L20 35 Z" fill="url(#robotBody)" stroke="#c7d2fe" stroke-width="2.5" stroke-linejoin="round"/>
+                                
+                                <path d="M22 45 Q50 36 78 45 L72 58 Q50 65 28 58 Z" fill="url(#visorDark)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                                
+                                <g class="transition-all duration-300">
+                                    <circle cx="38" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                                    <circle cx="38" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                    <circle cx="36.5" cy="48.5" r="1.5" fill="white"/> 
+                                </g>
+                                
+                                <g class="transition-all duration-300">
+                                    <circle cx="62" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                                    <circle cx="62" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                    <circle cx="60.5" cy="48.5" r="1.5" fill="white"/> 
+                                </g>
+                        
+                                <path d="M46 68 Q50 73 54 68" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        
+                                <ellipse cx="50" cy="80" rx="14" ry="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                                <ellipse cx="50" cy="80" rx="8" ry="2" class="limes-eye transition-colors duration-300" fill="#4fd1c5"/>
+                            </svg>
+                        </div>
+
+                        <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-3 tracking-tight">
+                            LessImage
+                        </h1>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Compresión inteligente de <span class="font-semibold text-gray-300">Dev Group Studio</span>.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 relative z-10">
+                        <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Imágenes Optimizadas</div>
+                        <div class="flex items-baseline gap-2">
+                            <span id="contador-imagenes" class="text-4xl font-black text-white">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-2xl p-4 flex items-center justify-between shadow-lg border-l-4 border-l-indigo-500 hover:bg-indigo-900/10 transition-colors group cursor-pointer" onclick="alert('¡Presiona ' + (navigator.platform.match('Mac') ? 'Cmd' : 'Ctrl') + ' + D para guardar LessImage!')">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-500/20 p-2 rounded-lg text-indigo-400 group-hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-bold">Guárdanos para después</p>
+                            <p class="text-gray-400 text-[10px]">Presiona <kbd class="bg-gray-800 px-1 rounded text-gray-300">Cmd/Ctrl</kbd> + <kbd class="bg-gray-800 px-1 rounded text-gray-300">D</kbd></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ad-slot glass rounded-3xl w-full h-[250px]">
+                    <span class="text-gray-500 font-medium text-sm text-center px-4">Banner Cuadrado</span>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-6 sm:p-12 md:col-span-2 flex flex-col items-center justify-center text-center border-dashed border-2 border-indigo-900/30 glow-hover relative group cursor-pointer transition-colors min-h-[400px]" id="dropzone">
+                
+                <div class="mb-6 text-indigo-400 group-hover:text-indigo-300 transition-colors transform group-hover:scale-110 duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">Arrastra tu imagen aquí</h3>
+                <p class="text-gray-400 text-sm mb-8 font-medium">Soporta JPG, PNG y WebP (Máx. 10MB)</p>
+                
+                <button id="btn-explorar" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-sm z-10 relative">
+                    Explorar Archivos
+                </button>
+            </div>
+            
+            <input type="file" id="fileInput" class="hidden" accept=".jpg,.jpeg,.png,.webp">
+        </div>
+    </div>
+
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        let btnExplorar = document.getElementById('btn-explorar');
+        const contadorImagenes = document.getElementById('contador-imagenes');
+        
+        const limesSvg = document.getElementById('limes-svg');
+        const limesEyes = document.querySelectorAll('.limes-eye');
+        const limesSpeech = document.getElementById('limes-speech');
+
+        let imagenesOptimizadas = 0; 
+
+        function setRobotState(state) {
+            if (state === 'working') {
+                limesSvg.classList.replace('drop-shadow-[0_0_15px_rgba(99,102,241,0.6)]', 'drop-shadow-[0_0_30px_rgba(239,68,68,0.8)]');
+                limesEyes.forEach(e => e.setAttribute('fill', '#ef4444')); 
+                limesSpeech.innerText = "¡Procesando! 🔴";
+                limesSpeech.className = "absolute top-5 right-5 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full rounded-bl-none animate-fade-in z-10";
+            } else if (state === 'done') {
+                limesSvg.classList.replace('drop-shadow-[0_0_30px_rgba(239,68,68,0.8)]', 'drop-shadow-[0_0_20px_rgba(34,197,94,0.6)]');
+                limesEyes.forEach(e => e.setAttribute('fill', '#22c55e')); 
+                limesSpeech.innerText = "¡Quedó divina! 🟢";
+                limesSpeech.className = "absolute top-5 right-5 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full rounded-bl-none animate-fade-in z-10";
+            } else {
+                limesSvg.className = "w-full h-full drop-shadow-[0_0_15px_rgba(99,102,241,0.6)] transition-all duration-500";
+                limesEyes.forEach(e => e.setAttribute('fill', '#4fd1c5')); 
+                limesSpeech.innerText = "¡Yo me encargo! 🤖";
+                limesSpeech.className = "absolute top-5 right-5 bg-indigo-600 text-white text-xs font-medium px-3 py-1.5 rounded-full rounded-bl-none animate-fade-in z-10";
+            }
+        }
+
+        function setupInitialEvents() {
+            dropzone.onclick = (e) => {
+                if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'INPUT') fileInput.click();
+            };
+            btnExplorar = document.getElementById('btn-explorar');
+            if(btnExplorar) {
+                btnExplorar.onclick = (e) => {
+                    e.stopPropagation(); 
+                    fileInput.click();
+                };
+            }
+        }
+
+        setupInitialEvents();
+
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-indigo-500', 'bg-indigo-500/10'); });
+        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-indigo-500', 'bg-indigo-500/10'); });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-indigo-500', 'bg-indigo-500/10');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFile(e.target.files[0]);
+            fileInput.value = ''; 
+        });
+
+        async function handleFile(file) {
+            const originalHTML = dropzone.innerHTML;
+            setRobotState('working');
+
+            dropzone.innerHTML = `
+                <div class="animate-pulse flex flex-col items-center">
+                    <svg class="animate-spin h-14 w-14 text-red-500 mb-6" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-white">Comprimiendo...</h3>
+                    <p class="text-gray-400 text-sm mt-3">Limes está triturando los píxeles pesados.</p>
+                </div>
+            `;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const originalUrl = URL.createObjectURL(file);
+                const sizeOriginal = (file.size / 1024).toFixed(1);
+
+                const [response] = await Promise.all([
+                    fetch("http://127.0.0.1:8000/api/compress", { method: "POST", body: formData }),
+                    new Promise(r => setTimeout(r, 1500))
+                ]);
+
+                if (!response.ok) throw new Error();
+
+                const blob = await response.blob();
+                const compressedUrl = URL.createObjectURL(blob);
+                const sizeNuevo = (blob.size / 1024).toFixed(1);
+                let porcentaje = Math.round((1 - (blob.size / file.size)) * 100);
+                if (porcentaje < 0) porcentaje = 0; 
+
+                setRobotState('done');
+
+                dropzone.innerHTML = `
+                    <div class="flex flex-col items-center w-full animate-fade-in z-10">
+                        <div class="relative w-full max-w-lg h-64 rounded-xl overflow-hidden mb-6 bg-black/40 border border-white/5 cursor-ew-resize">
+                            <img src="${originalUrl}" class="absolute inset-0 w-full h-full object-contain">
+                            <img id="img-compressed" src="${compressedUrl}" class="absolute inset-0 w-full h-full object-contain" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+                            <input type="range" id="compare-slider" min="0" max="100" value="50" class="absolute inset-0 w-full h-full opacity-0 z-20 cursor-ew-resize">
+                            <div id="slider-line" class="absolute top-0 bottom-0 left-[50%] w-[2px] bg-white shadow-lg transform -translate-x-1/2 pointer-events-none z-10">
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xl">
+                                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-center mb-6">
+                            <div class="text-right text-xs text-gray-400">Original: <span class="font-bold text-gray-200">${sizeOriginal} KB</span></div>
+                            <div class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-bold border border-green-500/30">-${porcentaje}%</div>
+                            <div class="text-left text-xs text-gray-400">LessImage: <span class="font-bold text-indigo-400">${sizeNuevo} KB</span></div>
+                        </div>
+                        <a href="${compressedUrl}" download="lessimage_${file.name.split('.')[0]}.webp" class="w-full max-w-sm bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-105 text-white py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Descargar Archivo
+                        </a>
+                        <button id="btn-reset" class="mt-4 text-sm text-gray-500 hover:text-white transition-colors">Comprimir otra imagen</button>
+                    </div>
+                `;
+
+                const slider = document.getElementById('compare-slider');
+                const imgCompressed = document.getElementById('img-compressed');
+                const sliderLine = document.getElementById('slider-line');
+                slider.oninput = (e) => {
+                    imgCompressed.style.clipPath = `polygon(0 0, ${e.target.value}% 0, ${e.target.value}% 100%, 0 100%)`;
+                    sliderLine.style.left = `${e.target.value}%`;
+                };
+
+                imagenesOptimizadas++;
+                contadorImagenes.innerText = imagenesOptimizadas;
+
+                document.getElementById('btn-reset').onclick = (e) => {
+                    e.stopPropagation();
+                    dropzone.innerHTML = originalHTML;
+                    setRobotState('idle');
+                    setupInitialEvents();
+                };
+
+            } catch (error) {
+                alert("Error de conexión.");
+                dropzone.innerHTML = originalHTML;
+                setRobotState('idle');
+                setupInitialEvents();
+            }
+        }
+    </script>
+</body>
+</html>
