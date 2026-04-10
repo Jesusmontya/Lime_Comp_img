@@ -1,8 +1,9 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import io
+import os
 
 # Inicializamos FastAPI con nombre profesional
 app = FastAPI(title="LessImage API - Dev Group Studio")
@@ -16,6 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- NUEVA RUTA: EL PUENTE HACIA TU FRONTEND ---
+@app.get("/")
+async def read_index():
+    # Esta ruta le dice a FastAPI: "Si alguien entra a la raíz, dales el index.html"
+    # El if os.path.exists ayuda a que no se caiga el servidor si olvidas subir el HTML
+    if os.path.exists('index.html'):
+        return FileResponse('index.html')
+    return {"mensaje": "El servidor de Dev Group Studio está activo, pero falta el archivo index.html"}
+
+# --- RUTA DE COMPRESIÓN ORIGINAL ---
 @app.post("/api/compress")
 async def compress_image(
     file: UploadFile = File(...),
@@ -55,7 +66,8 @@ async def compress_image(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error procesando la imagen: {str(e)}")
-
+    
+    
 # Código para correr el servidor si ejecutas este archivo directamente
 if __name__ == "__main__":
     import uvicorn
