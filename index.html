@@ -13,6 +13,14 @@
     <title>LessImage | Dev Group Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Bloqueo estricto para evitar el scroll horizontal y el rebote en celulares */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            overscroll-behavior-x: none;
+        }
+
         .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
@@ -32,7 +40,6 @@
         .bg-blob {
             position: absolute;
             filter: blur(100px);
-            z-index: -1;
             opacity: 0.35;
             border-radius: 50%;
         }
@@ -62,136 +69,141 @@
         }
     </style>
 </head>
-<body class="bg-[#050505] text-gray-200 min-h-screen flex items-start md:items-center justify-center p-4 py-8 md:p-6 relative z-0 overflow-x-hidden w-full max-w-[100vw] font-sans antialiased">
+<body class="bg-[#050505] text-gray-200 min-h-screen font-sans antialiased relative">
 
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNTL84ZG"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <div class="bg-blob bg-indigo-600 w-[500px] max-w-[100vw] h-[500px] top-[-100px] left-[-100px]"></div>
-    <div class="bg-blob bg-purple-600 w-[400px] max-w-[100vw] h-[400px] bottom-[-50px] right-[-50px]"></div>
 
-    <div class="max-w-6xl w-full flex flex-col gap-6 mx-auto relative">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10 w-full h-full">
+        <div class="bg-blob bg-indigo-600 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
+        <div class="bg-blob bg-purple-600 w-[400px] h-[400px] bottom-[-50px] right-[-50px]"></div>
+    </div>
 
-        <div class="sticky top-2 z-50 md:static glass rounded-2xl w-full h-[60px] max-h-[60px] md:h-[120px] md:max-h-none overflow-hidden flex items-center justify-center bg-[#050505]/80 md:bg-black/20 backdrop-blur-2xl border border-white/10 md:border-transparent shadow-[0_10px_40px_rgba(0,0,0,0.5)] md:shadow-none">
-            <ins class="adsbygoogle"
-                 style="display:block; width:100%; height:100%;"
-                 data-ad-client="ca-pub-6418844546286621"
-                 data-ad-slot="PON_TU_ID_AQUI"
-                 data-ad-format="horizontal"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
+    <div class="min-h-screen flex items-start md:items-center justify-center w-full p-4 py-8 md:p-6 z-0 relative">
+        <div class="max-w-6xl w-full flex flex-col gap-6 mx-auto relative">
 
-        <div class="flex flex-col md:grid md:grid-cols-3 gap-6">
-            
-            <div class="contents md:flex md:flex-col gap-6 md:col-span-1">
+            <div class="sticky top-2 z-50 md:static glass rounded-2xl w-full h-[60px] max-h-[60px] md:h-[120px] md:max-h-none overflow-hidden flex items-center justify-center bg-[#050505]/80 md:bg-black/20 backdrop-blur-2xl border border-white/10 md:border-transparent shadow-[0_10px_40px_rgba(0,0,0,0.5)] md:shadow-none">
+                <ins class="adsbygoogle"
+                     style="display:block; width:100%; height:100%;"
+                     data-ad-client="ca-pub-6418844546286621"
+                     data-ad-slot="PON_TU_ID_AQUI"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <div class="flex flex-col md:grid md:grid-cols-3 gap-6">
                 
-                <div class="order-1 md:order-none glass rounded-3xl p-5 md:p-8 flex flex-col justify-between glow-hover shadow-lg flex-grow relative overflow-hidden">
+                <div class="contents md:flex md:flex-col gap-6 md:col-span-1">
                     
-                    <div id="limes-speech" class="absolute top-3 right-3 md:top-5 md:right-5 bg-indigo-600 text-white text-[10px] md:text-xs font-medium px-2 py-1 md:px-3 md:py-1.5 rounded-full rounded-bl-none shadow-lg animate-fade-in transition-colors duration-500 z-10" style="animation-delay: 0.5s;">
-                        ¡Yo me encargo! 🤖
-                    </div>
-
-                    <div>
-                        <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-6 relative animate-float">
-                            <svg id="limes-svg" viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_15px_rgba(99,102,241,0.6)] transition-all duration-500">
-                                <defs>
-                                    <linearGradient id="robotBody" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="visorDark" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#000000;stop-opacity:0.95" />
-                                        <stop offset="100%" style="stop-color:#1e293b;stop-opacity:0.95" />
-                                    </linearGradient>
-                                </defs>
-                                
-                                <path d="M 25 30 L 12 20 M 75 30 L 88 20" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
-                                <circle cx="12" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
-                                <circle cx="88" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
-
-                                <path d="M50 15 L80 35 L80 65 L50 85 L20 65 L20 35 Z" fill="url(#robotBody)" stroke="#c7d2fe" stroke-width="2.5" stroke-linejoin="round"/>
-                                
-                                <path d="M22 45 Q50 36 78 45 L72 58 Q50 65 28 58 Z" fill="url(#visorDark)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-                                
-                                <g class="transition-all duration-300">
-                                    <circle cx="38" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
-                                    <circle cx="38" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
-                                    <circle cx="36.5" cy="48.5" r="1.5" fill="white"/> 
-                                </g>
-                                
-                                <g class="transition-all duration-300">
-                                    <circle cx="62" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
-                                    <circle cx="62" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
-                                    <circle cx="60.5" cy="48.5" r="1.5" fill="white"/> 
-                                </g>
+                    <div class="order-1 md:order-none glass rounded-3xl p-5 md:p-8 flex flex-col justify-between glow-hover shadow-lg flex-grow relative overflow-hidden">
                         
-                                <path d="M46 68 Q50 73 54 68" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                        
-                                <ellipse cx="50" cy="80" rx="14" ry="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-                                <ellipse cx="50" cy="80" rx="8" ry="2" class="limes-eye transition-colors duration-300" fill="#4fd1c5"/>
-                            </svg>
+                        <div id="limes-speech" class="absolute top-3 right-3 md:top-5 md:right-5 bg-indigo-600 text-white text-[10px] md:text-xs font-medium px-2 py-1 md:px-3 md:py-1.5 rounded-full rounded-bl-none shadow-lg animate-fade-in transition-colors duration-500 z-10" style="animation-delay: 0.5s;">
+                            ¡Yo me encargo! 🤖
                         </div>
 
-                        <h1 class="text-2xl md:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-2 md:mb-3 tracking-tight">
-                            LessImage
-                        </h1>
-                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
-                            Compresión inteligente de <span class="font-semibold text-gray-300">Dev Group Studio</span>.
-                        </p>
-                    </div>
-                    
-                    <div class="mt-6 md:mt-8 relative z-10">
-                        <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 md:mb-2">Imágenes Optimizadas</div>
-                        <div class="flex items-baseline gap-2">
-                            <span id="contador-imagenes" class="text-3xl md:text-4xl font-black text-white">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="order-3 md:order-none glass rounded-2xl p-4 flex items-center justify-between shadow-lg border-l-4 border-l-indigo-500 hover:bg-indigo-900/10 transition-colors group cursor-pointer" onclick="alert('¡Presiona ' + (navigator.platform.match('Mac') ? 'Cmd' : 'Ctrl') + ' + D para guardar LessImage!')">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-indigo-500/20 p-2 rounded-lg text-indigo-400 group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                        </div>
                         <div>
-                            <p class="text-white text-sm font-bold">Guárdanos para después</p>
-                            <p class="text-gray-400 text-[10px]">Presiona <kbd class="bg-gray-800 px-1 rounded text-gray-300">Cmd/Ctrl</kbd> + <kbd class="bg-gray-800 px-1 rounded text-gray-300">D</kbd></p>
+                            <div class="w-16 h-16 md:w-24 md:h-24 mb-3 md:mb-6 relative animate-float">
+                                <svg id="limes-svg" viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_15px_rgba(99,102,241,0.6)] transition-all duration-500">
+                                    <defs>
+                                        <linearGradient id="robotBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+                                        </linearGradient>
+                                        <linearGradient id="visorDark" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#000000;stop-opacity:0.95" />
+                                            <stop offset="100%" style="stop-color:#1e293b;stop-opacity:0.95" />
+                                        </linearGradient>
+                                    </defs>
+                                    
+                                    <path d="M 25 30 L 12 20 M 75 30 L 88 20" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
+                                    <circle cx="12" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                    <circle cx="88" cy="20" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+
+                                    <path d="M50 15 L80 35 L80 65 L50 85 L20 65 L20 35 Z" fill="url(#robotBody)" stroke="#c7d2fe" stroke-width="2.5" stroke-linejoin="round"/>
+                                    
+                                    <path d="M22 45 Q50 36 78 45 L72 58 Q50 65 28 58 Z" fill="url(#visorDark)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                                    
+                                    <g class="transition-all duration-300">
+                                        <circle cx="38" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                                        <circle cx="38" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                        <circle cx="36.5" cy="48.5" r="1.5" fill="white"/> 
+                                    </g>
+                                    
+                                    <g class="transition-all duration-300">
+                                        <circle cx="62" cy="50" r="7" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+                                        <circle cx="62" cy="50" r="4" class="limes-eye animate-pulse transition-colors duration-300" fill="#4fd1c5"/>
+                                        <circle cx="60.5" cy="48.5" r="1.5" fill="white"/> 
+                                    </g>
+                            
+                                    <path d="M46 68 Q50 73 54 68" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                            
+                                    <ellipse cx="50" cy="80" rx="14" ry="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                                    <ellipse cx="50" cy="80" rx="8" ry="2" class="limes-eye transition-colors duration-300" fill="#4fd1c5"/>
+                                </svg>
+                            </div>
+
+                            <h1 class="text-2xl md:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-2 md:mb-3 tracking-tight">
+                                LessImage
+                            </h1>
+                            <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
+                                Compresión inteligente de <span class="font-semibold text-gray-300">Dev Group Studio</span>.
+                            </p>
                         </div>
+                        
+                        <div class="mt-6 md:mt-8 relative z-10">
+                            <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 md:mb-2">Imágenes Optimizadas</div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="contador-imagenes" class="text-3xl md:text-4xl font-black text-white">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-3 md:order-none glass rounded-2xl p-4 flex items-center justify-between shadow-lg border-l-4 border-l-indigo-500 hover:bg-indigo-900/10 transition-colors group cursor-pointer" onclick="alert('¡Presiona ' + (navigator.platform.match('Mac') ? 'Cmd' : 'Ctrl') + ' + D para guardar LessImage!')">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-indigo-500/20 p-2 rounded-lg text-indigo-400 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-bold">Guárdanos para después</p>
+                                <p class="text-gray-400 text-[10px]">Presiona <kbd class="bg-gray-800 px-1 rounded text-gray-300">Cmd/Ctrl</kbd> + <kbd class="bg-gray-800 px-1 rounded text-gray-300">D</kbd></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-4 md:order-none glass rounded-3xl w-full h-[80px] max-h-[80px] md:h-[250px] md:max-h-none overflow-hidden flex items-center justify-center bg-black/20">
+                        <ins class="adsbygoogle"
+                             style="display:block; width:100%; height:100%;"
+                             data-ad-client="ca-pub-6418844546286621"
+                             data-ad-slot="PON_TU_ID_AQUI"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
 
-                <div class="order-4 md:order-none glass rounded-3xl w-full h-[250px] overflow-hidden flex items-center justify-center bg-black/20">
-                    <ins class="adsbygoogle"
-                         style="display:block; width:100%; height:100%;"
-                         data-ad-client="ca-pub-6418844546286621"
-                         data-ad-slot="PON_TU_ID_AQUI"
-                         data-ad-format="rectangle"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </div>
-
-            <div class="order-2 md:order-none glass rounded-3xl p-6 sm:p-12 md:col-span-2 flex flex-col items-center justify-center text-center border-dashed border-2 border-indigo-900/30 glow-hover relative group cursor-pointer transition-colors min-h-[350px] md:min-h-[400px]" id="dropzone">
-                
-                <div class="mb-6 text-indigo-400 group-hover:text-indigo-300 transition-colors transform group-hover:scale-110 duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20 mx-auto drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
+                <div class="order-2 md:order-none glass rounded-3xl p-6 sm:p-12 md:col-span-2 flex flex-col items-center justify-center text-center border-dashed border-2 border-indigo-900/30 glow-hover relative group cursor-pointer transition-colors min-h-[350px] md:min-h-[400px]" id="dropzone">
+                    
+                    <div class="mb-6 text-indigo-400 group-hover:text-indigo-300 transition-colors transform group-hover:scale-110 duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20 mx-auto drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Arrastra tu imagen aquí</h3>
+                    <p class="text-gray-400 text-xs md:text-sm mb-8 font-medium">Soporta JPG, PNG y WebP (Máx. 10MB)</p>
+                    
+                    <button id="btn-explorar" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-sm z-10 relative">
+                        Explorar Archivos
+                    </button>
                 </div>
                 
-                <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Arrastra tu imagen aquí</h3>
-                <p class="text-gray-400 text-xs md:text-sm mb-8 font-medium">Soporta JPG, PNG y WebP (Máx. 10MB)</p>
-                
-                <button id="btn-explorar" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-sm z-10 relative">
-                    Explorar Archivos
-                </button>
+                <input type="file" id="fileInput" class="hidden" accept=".jpg,.jpeg,.png,.webp">
             </div>
-            
-            <input type="file" id="fileInput" class="hidden" accept=".jpg,.jpeg,.png,.webp">
         </div>
     </div>
 
