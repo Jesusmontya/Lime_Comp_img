@@ -37,26 +37,6 @@
             border-radius: 50%;
         }
 
-        .ad-slot {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .ad-slot::before {
-            content: "ADVERTISEMENT";
-            position: absolute;
-            top: 8px;
-            left: 12px;
-            font-size: 0.6rem;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.3);
-            font-family: monospace;
-        }
-
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-10px) rotate(1deg); }
@@ -91,8 +71,16 @@
 
     <div class="max-w-6xl w-full flex flex-col gap-6">
 
-        <div class="ad-slot glass rounded-2xl w-full h-[100px] md:h-[120px]">
-            <span class="text-gray-500 font-medium text-sm">Espacio para Google AdSense</span>
+        <div class="glass rounded-2xl w-full h-[100px] md:h-[120px] overflow-hidden flex items-center justify-center bg-black/20">
+            <ins class="adsbygoogle"
+                 style="display:block; width:100%; height:100%;"
+                 data-ad-client="ca-pub-6418844546286621"
+                 data-ad-slot="PON_TU_ID_AQUI"
+                 data-ad-format="horizontal"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -174,8 +162,16 @@
                     </div>
                 </div>
 
-                <div class="ad-slot glass rounded-3xl w-full h-[250px]">
-                    <span class="text-gray-500 font-medium text-sm text-center px-4">Banner Cuadrado</span>
+                <div class="glass rounded-3xl w-full h-[250px] overflow-hidden flex items-center justify-center bg-black/20">
+                    <ins class="adsbygoogle"
+                         style="display:block; width:100%; height:100%;"
+                         data-ad-client="ca-pub-6418844546286621"
+                         data-ad-slot="PON_TU_ID_AQUI"
+                         data-ad-format="rectangle"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
 
