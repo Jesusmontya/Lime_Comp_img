@@ -272,7 +272,7 @@
                 const sizeOriginal = (file.size / 1024).toFixed(1);
 
                 const [response] = await Promise.all([
-                    fetch("http://127.0.0.1:8000/api/compress", { method: "POST", body: formData }),
+                 fetch("https://devgroupstudio.xyz/api/compress", { method: "POST", body: formData }),
                     new Promise(r => setTimeout(r, 1500))
                 ]);
 
