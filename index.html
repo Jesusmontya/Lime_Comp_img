@@ -13,7 +13,6 @@
     <title>LessImage | Dev Group Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Bloqueo estricto para evitar el scroll horizontal y el rebote en celulares */
         html, body {
             overflow-x: hidden;
             width: 100%;
@@ -59,7 +58,12 @@
             animation: fadeIn 0.5s ease-out forwards;
         }
         
-        /* Personalización del input range invisible para el slider */
+        /* BLOQUEO DE SCROLL FANTASMA EN EL SLIDER PARA MÓVILES */
+        input[type=range] {
+            touch-action: none;
+            -webkit-appearance: none;
+            background: transparent;
+        }
         input[type=range]::-webkit-slider-thumb {
             pointer-events: all;
             width: 40px;
@@ -186,24 +190,29 @@
                     </div>
                 </div>
 
-                <div class="order-2 md:order-none glass rounded-3xl p-6 sm:p-12 md:col-span-2 flex flex-col items-center justify-center text-center border-dashed border-2 border-indigo-900/30 glow-hover relative group cursor-pointer transition-colors min-h-[350px] md:min-h-[400px]" id="dropzone">
+                <div class="order-2 md:order-none md:col-span-2 flex flex-col gap-6">
                     
-                    <div class="mb-6 text-indigo-400 group-hover:text-indigo-300 transition-colors transform group-hover:scale-110 duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20 mx-auto drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
+                    <div class="glass rounded-3xl p-6 sm:p-12 flex flex-col items-center justify-center text-center border-dashed border-2 border-indigo-900/30 glow-hover relative group cursor-pointer transition-colors min-h-[250px] md:min-h-[300px]" id="dropzone">
+                        <div class="mb-4 text-indigo-400 group-hover:text-indigo-300 transition-colors transform group-hover:scale-110 duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 md:h-16 md:w-16 mx-auto drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Arrastra tus imágenes aquí</h3>
+                        <p class="text-gray-400 text-xs md:text-sm mb-6 font-medium">Soporta múltiples JPG, PNG y WebP</p>
+                        
+                        <button id="btn-explorar" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-sm z-10 relative">
+                            Explorar Archivos
+                        </button>
                     </div>
-                    
-                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">Arrastra tu imagen aquí</h3>
-                    <p class="text-gray-400 text-xs md:text-sm mb-8 font-medium">Soporta JPG, PNG y WebP (Máx. 10MB)</p>
-                    
-                    <button id="btn-explorar" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-sm z-10 relative">
-                        Explorar Archivos
-                    </button>
+
+                    <div id="results-container" class="w-full flex flex-col gap-6 empty:hidden">
+                        </div>
+
                 </div>
-                
-                <input type="file" id="fileInput" class="hidden" accept=".jpg,.jpeg,.png,.webp">
             </div>
+            
+            <input type="file" id="fileInput" class="hidden" accept=".jpg,.jpeg,.png,.webp" multiple>
         </div>
     </div>
 
@@ -212,12 +221,14 @@
         const fileInput = document.getElementById('fileInput');
         let btnExplorar = document.getElementById('btn-explorar');
         const contadorImagenes = document.getElementById('contador-imagenes');
+        const resultsContainer = document.getElementById('results-container');
         
         const limesSvg = document.getElementById('limes-svg');
         const limesEyes = document.querySelectorAll('.limes-eye');
         const limesSpeech = document.getElementById('limes-speech');
 
         let imagenesOptimizadas = 0; 
+        let archivosProcesandose = 0;
 
         function setRobotState(state) {
             if (state === 'working') {
@@ -238,48 +249,54 @@
             }
         }
 
-        function setupInitialEvents() {
-            dropzone.onclick = (e) => {
-                if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'INPUT') fileInput.click();
-            };
-            btnExplorar = document.getElementById('btn-explorar');
-            if(btnExplorar) {
-                btnExplorar.onclick = (e) => {
-                    e.stopPropagation(); 
-                    fileInput.click();
-                };
-            }
-        }
-
-        setupInitialEvents();
+        // Eventos Dropzone
+        dropzone.onclick = (e) => {
+            if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'INPUT') fileInput.click();
+        };
+        btnExplorar.onclick = (e) => {
+            e.stopPropagation(); 
+            fileInput.click();
+        };
 
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-indigo-500', 'bg-indigo-500/10'); });
         dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-indigo-500', 'bg-indigo-500/10'); });
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropzone.classList.remove('border-indigo-500', 'bg-indigo-500/10');
-            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            if (e.dataTransfer.files.length) procesarMultiplesArchivos(e.dataTransfer.files);
         });
 
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) handleFile(e.target.files[0]);
+            if (e.target.files.length) procesarMultiplesArchivos(e.target.files);
             fileInput.value = ''; 
         });
 
-        async function handleFile(file) {
-            const originalHTML = dropzone.innerHTML;
+        // Lógica de Lote (Batch Processing)
+        function procesarMultiplesArchivos(files) {
+            archivosProcesandose += files.length;
             setRobotState('working');
 
-            dropzone.innerHTML = `
-                <div class="animate-pulse flex flex-col items-center">
-                    <svg class="animate-spin h-14 w-14 text-red-500 mb-6" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <h3 class="text-xl md:text-2xl font-bold text-white">Comprimiendo...</h3>
-                    <p class="text-gray-400 text-xs md:text-sm mt-3">Limes está triturando los píxeles pesados.</p>
-                </div>
+            for (let i = 0; i < files.length; i++) {
+                comprimirUnSoloArchivo(files[i]);
+            }
+        }
+
+        async function comprimirUnSoloArchivo(file) {
+            const uniqueId = Math.random().toString(36).substr(2, 9);
+            
+            // 1. Crear Tarjeta de "Cargando"
+            const card = document.createElement('div');
+            card.id = `card-${uniqueId}`;
+            card.className = "glass rounded-3xl p-6 flex flex-col items-center justify-center animate-pulse min-h-[200px]";
+            card.innerHTML = `
+                <svg class="animate-spin h-10 w-10 text-red-500 mb-4" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-gray-400 text-sm font-medium">Triturando <span class="text-white">${file.name}</span>...</p>
             `;
+            // Insertar al inicio de la lista
+            resultsContainer.prepend(card);
 
             const formData = new FormData();
             formData.append("file", file);
@@ -290,7 +307,7 @@
 
                 const [response] = await Promise.all([
                  fetch("https://devgroupstudio.xyz/api/compress", { method: "POST", body: formData }),
-                    new Promise(r => setTimeout(r, 1500))
+                    new Promise(r => setTimeout(r, 1000))
                 ]);
 
                 if (!response.ok) throw new Error();
@@ -301,36 +318,43 @@
                 let porcentaje = Math.round((1 - (blob.size / file.size)) * 100);
                 if (porcentaje < 0) porcentaje = 0; 
 
-                setRobotState('done');
+                // 2. Reemplazar "Cargando" con el Resultado Real
+                card.className = "glass rounded-3xl p-6 flex flex-col items-center w-full animate-fade-in z-10 relative group";
+                card.innerHTML = `
+                    <button onclick="document.getElementById('card-${uniqueId}').remove()" class="absolute top-4 right-4 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 p-2 rounded-full transition-colors z-30">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
 
-                dropzone.innerHTML = `
-                    <div class="flex flex-col items-center w-full animate-fade-in z-10">
-                        <div class="relative w-full max-w-lg h-48 md:h-64 rounded-xl overflow-hidden mb-6 bg-black/40 border border-white/5 cursor-ew-resize">
-                            <img src="${originalUrl}" class="absolute inset-0 w-full h-full object-contain">
-                            <img id="img-compressed" src="${compressedUrl}" class="absolute inset-0 w-full h-full object-contain" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
-                            <input type="range" id="compare-slider" min="0" max="100" value="50" class="absolute inset-0 w-full h-full opacity-0 z-20 cursor-ew-resize">
-                            <div id="slider-line" class="absolute top-0 bottom-0 left-[50%] w-[2px] bg-white shadow-lg transform -translate-x-1/2 pointer-events-none z-10">
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xl">
-                                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
-                                </div>
+                    <h4 class="text-white font-bold text-sm md:text-base mb-4 w-full text-left truncate pr-10">${file.name}</h4>
+
+                    <div class="relative w-full h-56 md:h-72 rounded-xl overflow-hidden mb-6 bg-black/40 border border-white/5 cursor-ew-resize">
+                        <img src="${originalUrl}" class="absolute inset-0 w-full h-full object-contain">
+                        <img id="img-compressed-${uniqueId}" src="${compressedUrl}" class="absolute inset-0 w-full h-full object-contain" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+                        <input type="range" id="compare-slider-${uniqueId}" min="0" max="100" value="50" class="absolute inset-0 w-full h-full opacity-0 z-20 cursor-ew-resize">
+                        <div id="slider-line-${uniqueId}" class="absolute top-0 bottom-0 left-[50%] w-[2px] bg-white shadow-lg transform -translate-x-1/2 pointer-events-none z-10">
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xl">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
                             </div>
                         </div>
-                        <div class="flex gap-4 md:gap-6 items-center mb-6 w-full justify-center">
-                            <div class="text-right text-[10px] md:text-xs text-gray-400">Original: <br class="block md:hidden"><span class="font-bold text-gray-200">${sizeOriginal} KB</span></div>
-                            <div class="bg-green-500/20 text-green-400 px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold border border-green-500/30">-${porcentaje}%</div>
-                            <div class="text-left text-[10px] md:text-xs text-gray-400">LessImage: <br class="block md:hidden"><span class="font-bold text-indigo-400">${sizeNuevo} KB</span></div>
-                        </div>
-                        <a href="${compressedUrl}" download="lessimage_${file.name.split('.')[0]}.webp" class="w-full max-w-sm bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-105 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg transition-all flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            Descargar Archivo
-                        </a>
-                        <button id="btn-reset" class="mt-4 text-xs md:text-sm text-gray-500 hover:text-white transition-colors">Comprimir otra imagen</button>
                     </div>
+
+                    <div class="flex gap-4 md:gap-6 items-center mb-6 w-full justify-center">
+                        <div class="text-right text-[10px] md:text-xs text-gray-400">Original: <br class="block md:hidden"><span class="font-bold text-gray-200">${sizeOriginal} KB</span></div>
+                        <div class="bg-green-500/20 text-green-400 px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold border border-green-500/30">-${porcentaje}%</div>
+                        <div class="text-left text-[10px] md:text-xs text-gray-400">LessImage: <br class="block md:hidden"><span class="font-bold text-indigo-400">${sizeNuevo} KB</span></div>
+                    </div>
+
+                    <a href="${compressedUrl}" download="lessimage_${file.name.split('.')[0]}.webp" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-[1.02] text-white py-3 md:py-4 rounded-xl font-bold text-sm md:text-base transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Descargar Optimización
+                    </a>
                 `;
 
-                const slider = document.getElementById('compare-slider');
-                const imgCompressed = document.getElementById('img-compressed');
-                const sliderLine = document.getElementById('slider-line');
+                // Activar Lógica del Slider específicamente para esta tarjeta
+                const slider = document.getElementById(`compare-slider-${uniqueId}`);
+                const imgCompressed = document.getElementById(`img-compressed-${uniqueId}`);
+                const sliderLine = document.getElementById(`slider-line-${uniqueId}`);
+                
                 slider.oninput = (e) => {
                     imgCompressed.style.clipPath = `polygon(0 0, ${e.target.value}% 0, ${e.target.value}% 100%, 0 100%)`;
                     sliderLine.style.left = `${e.target.value}%`;
@@ -339,18 +363,21 @@
                 imagenesOptimizadas++;
                 contadorImagenes.innerText = imagenesOptimizadas;
 
-                document.getElementById('btn-reset').onclick = (e) => {
-                    e.stopPropagation();
-                    dropzone.innerHTML = originalHTML;
-                    setRobotState('idle');
-                    setupInitialEvents();
-                };
-
             } catch (error) {
-                alert("Error de conexión.");
-                dropzone.innerHTML = originalHTML;
-                setRobotState('idle');
-                setupInitialEvents();
+                card.innerHTML = `
+                    <div class="text-center">
+                        <svg class="w-12 h-12 text-red-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-red-400 font-bold">Error de conexión con ${file.name}</p>
+                        <button onclick="document.getElementById('card-${uniqueId}').remove()" class="mt-4 text-xs text-gray-500 hover:text-white underline">Cerrar mensaje</button>
+                    </div>
+                `;
+            } finally {
+                archivosProcesandose--;
+                if(archivosProcesandose === 0) {
+                    setRobotState('done');
+                    // Volver a estado normal después de 3 segundos
+                    setTimeout(() => { if(archivosProcesandose === 0) setRobotState('idle'); }, 3000);
+                }
             }
         }
     </script>
