@@ -9,7 +9,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6418844546286621" crossorigin="anonymous"></script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LessImage | Dev Group Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -62,16 +62,16 @@
         }
     </style>
 </head>
-<body class="bg-[#050505] text-gray-200 min-h-screen flex items-center justify-center p-6 relative z-0 overflow-x-hidden font-sans antialiased">
+<body class="bg-[#050505] text-gray-200 min-h-screen flex items-start md:items-center justify-center p-4 py-8 md:p-6 relative z-0 overflow-x-hidden w-full max-w-[100vw] font-sans antialiased">
 
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNTL84ZG"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <div class="bg-blob bg-indigo-600 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
-    <div class="bg-blob bg-purple-600 w-[400px] h-[400px] bottom-[-50px] right-[-50px]"></div>
+    <div class="bg-blob bg-indigo-600 w-[500px] max-w-[100vw] h-[500px] top-[-100px] left-[-100px]"></div>
+    <div class="bg-blob bg-purple-600 w-[400px] max-w-[100vw] h-[400px] bottom-[-50px] right-[-50px]"></div>
 
-    <div class="max-w-6xl w-full flex flex-col gap-6">
+    <div class="max-w-6xl w-full flex flex-col gap-6 mx-auto">
 
-        <div class="glass rounded-2xl w-full h-[60px] md:h-[120px] overflow-hidden flex items-center justify-center bg-black/20">
+        <div class="glass rounded-2xl w-full h-[60px] max-h-[60px] md:h-[120px] md:max-h-none overflow-hidden flex items-center justify-center bg-black/20">
             <ins class="adsbygoogle"
                  style="display:block; width:100%; height:100%;"
                  data-ad-client="ca-pub-6418844546286621"
@@ -207,7 +207,6 @@
 
         let imagenesOptimizadas = 0; 
 
-        // Se actualizó el JS para que no borre las clases de diseño Mobile al cambiar de estado
         function setRobotState(state) {
             if (state === 'working') {
                 limesSvg.classList.replace('drop-shadow-[0_0_15px_rgba(99,102,241,0.6)]', 'drop-shadow-[0_0_30px_rgba(239,68,68,0.8)]');
