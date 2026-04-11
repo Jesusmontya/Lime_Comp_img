@@ -85,20 +85,20 @@
     <div class="min-h-screen flex items-start md:items-center justify-center w-full p-4 py-8 md:p-6 z-0 relative">
         <div class="max-w-6xl w-full flex flex-col gap-6 mx-auto relative">
 
-            <div class="sticky top-2 z-50 md:static glass rounded-2xl w-full flex items-center justify-center bg-[#050505]/80 md:bg-black/20 backdrop-blur-2xl border border-white/10 md:border-transparent shadow-[0_10px_40px_rgba(0,0,0,0.5)] md:shadow-none p-2">
+            <div class="sticky top-2 z-50 md:static glass rounded-2xl w-full flex items-center justify-center bg-[#050505]/80 md:bg-black/20 backdrop-blur-2xl border border-white/10 md:border-transparent shadow-[0_10px_40px_rgba(0,0,0,0.5)] md:shadow-none p-2 min-h-[60px] md:min-h-[120px]">
                 
                 <div class="block md:hidden">
                     <ins class="adsbygoogle"
                          style="display:inline-block;width:320px;height:50px"
                          data-ad-client="ca-pub-6418844546286621"
-                         data-ad-slot="PON_TU_ID_AQUI"></ins>
+                         data-ad-slot="3436059617"></ins>
                 </div>
                 
                 <div class="hidden md:block">
                     <ins class="adsbygoogle"
                          style="display:inline-block;width:728px;height:90px"
                          data-ad-client="ca-pub-6418844546286621"
-                         data-ad-slot="PON_TU_ID_AQUI"></ins>
+                         data-ad-slot="3436059617"></ins>
                 </div>
                 <script>
                      (adsbygoogle = window.adsbygoogle || []).push({});
@@ -191,14 +191,14 @@
                             <ins class="adsbygoogle"
                                  style="display:inline-block;width:320px;height:100px"
                                  data-ad-client="ca-pub-6418844546286621"
-                                 data-ad-slot="PON_TU_ID_AQUI"></ins>
+                                 data-ad-slot="3436059617"></ins>
                         </div>
 
                         <div class="hidden md:block">
                             <ins class="adsbygoogle"
                                  style="display:inline-block;width:300px;height:250px"
                                  data-ad-client="ca-pub-6418844546286621"
-                                 data-ad-slot="PON_TU_ID_AQUI"></ins>
+                                 data-ad-slot="3436059617"></ins>
                         </div>
                         <script>
                              (adsbygoogle = window.adsbygoogle || []).push({});
@@ -315,23 +315,14 @@
             formData.append("file", file);
 
             try {
+                const res = await fetch("https://devgroupstudio.xyz/api/compress", { method: "POST", body: formData });
+                if (!res.ok) throw new Error();
+                
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
                 const originalUrl = URL.createObjectURL(file);
-                const sizeOriginal = (file.size / 1024).toFixed(1);
-
-                const [response] = await Promise.all([
-                 fetch("https://devgroupstudio.xyz/api/compress", { method: "POST", body: formData }),
-                    new Promise(r => setTimeout(r, 1000))
-                ]);
-
-                if (!response.ok) throw new Error();
-
-                const blob = await response.blob();
-                const compressedUrl = URL.createObjectURL(blob);
-                const sizeNuevo = (blob.size / 1024).toFixed(1);
-                let porcentaje = Math.round((1 - (blob.size / file.size)) * 100);
-                if (porcentaje < 0) porcentaje = 0; 
-
-                card.className = "glass rounded-3xl p-6 flex flex-col items-center w-full animate-fade-in z-10 relative group";
+                
+                card.className = "glass rounded-3xl p-5 md:p-6 animate-fade-in relative group";
                 card.innerHTML = `
                     <button onclick="document.getElementById('card-${uniqueId}').remove()" class="absolute top-4 right-4 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 p-2 rounded-full transition-colors z-30">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -351,12 +342,12 @@
                     </div>
 
                     <div class="flex gap-4 md:gap-6 items-center mb-6 w-full justify-center">
-                        <div class="text-right text-[10px] md:text-xs text-gray-400">Original: <br class="block md:hidden"><span class="font-bold text-gray-200">${sizeOriginal} KB</span></div>
-                        <div class="bg-green-500/20 text-green-400 px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold border border-green-500/30">-${porcentaje}%</div>
-                        <div class="text-left text-[10px] md:text-xs text-gray-400">LessImage: <br class="block md:hidden"><span class="font-bold text-indigo-400">${sizeNuevo} KB</span></div>
+                        <div class="text-right text-[10px] md:text-xs text-gray-400">Original: <br class="block md:hidden"><span class="font-bold text-gray-200">${(file.size/1024).toFixed(1)} KB</span></div>
+                        <div class="bg-green-500/20 text-green-400 px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold border border-green-500/30">-${Math.round((1-blob.size/file.size)*100)}%</div>
+                        <div class="text-left text-[10px] md:text-xs text-gray-400">LessImage: <br class="block md:hidden"><span class="font-bold text-indigo-400">${(blob.size/1024).toFixed(1)} KB</span></div>
                     </div>
 
-                    <a href="${compressedUrl}" download="lessimage_${file.name.split('.')[0]}.webp" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-[1.02] text-white py-3 md:py-4 rounded-xl font-bold text-sm md:text-base transition-all flex items-center justify-center gap-2">
+                    <a href="${url}" download="lessimage_${file.name.split('.')[0]}.webp" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-[1.02] text-white py-3 md:py-4 rounded-xl font-bold text-sm md:text-base transition-all flex items-center justify-center gap-2">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Descargar Optimización
                     </a>
@@ -371,8 +362,8 @@
                     sliderLine.style.left = `${e.target.value}%`;
                 };
 
-                imagenesOptimizadas++;
-                contadorImagenes.innerText = imagenesOptimizadas;
+                optimizadas++;
+                contadorImagenes.innerText = optimizadas;
 
             } catch (error) {
                 card.innerHTML = `
@@ -383,10 +374,10 @@
                     </div>
                 `;
             } finally {
-                archivosProcesandose--;
-                if(archivosProcesandose === 0) {
+                procesando--;
+                if(procesando === 0) {
                     setRobotState('done');
-                    setTimeout(() => { if(archivosProcesandose === 0) setRobotState('idle'); }, 3000);
+                    setTimeout(() => { if(procesando === 0) setRobotState('idle'); }, 3000);
                 }
             }
         }
