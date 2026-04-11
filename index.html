@@ -315,7 +315,9 @@
             formData.append("file", file);
 
             try {
-                const res = await fetch("https://devgroupstudio.xyz/api/compress", { method: "POST", body: formData });
+                // AQUÍ ESTÁ EL CAMBIO DE LA URL (Línea 320 aprox)
+                const res = await fetch("/api/compress", { method: "POST", body: formData });
+                
                 if (!res.ok) throw new Error();
                 
                 const blob = await res.blob();
