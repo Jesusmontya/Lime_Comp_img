@@ -334,7 +334,7 @@
 
                     <div class="relative w-full h-56 md:h-72 rounded-xl overflow-hidden mb-6 bg-black/40 border border-white/5 cursor-ew-resize">
                         <img src="${originalUrl}" class="absolute inset-0 w-full h-full object-contain">
-                        <img id="img-compressed-${uniqueId}" src="${compressedUrl}" class="absolute inset-0 w-full h-full object-contain" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+                        <img id="img-compressed-${uniqueId}" src="${url}" class="absolute inset-0 w-full h-full object-contain" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
                         <input type="range" id="compare-slider-${uniqueId}" min="0" max="100" value="50" class="absolute inset-0 w-full h-full opacity-0 z-20 cursor-ew-resize">
                         <div id="slider-line-${uniqueId}" class="absolute top-0 bottom-0 left-[50%] w-[2px] bg-white shadow-lg transform -translate-x-1/2 pointer-events-none z-10">
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xl">
